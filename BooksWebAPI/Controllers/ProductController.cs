@@ -21,14 +21,14 @@ namespace BooksWebAPI.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetAll()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_db.Products.ToList());
         }
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
             return "value";
         }

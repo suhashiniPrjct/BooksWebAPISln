@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BooksWebAPI.Models;
+using BooksWebAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BooksWebAPI.Data;

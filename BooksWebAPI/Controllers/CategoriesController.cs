@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BooksWebAPI.Data;
-using BooksWebAPI.Models;
+using BooksWebAPI.Domain.Entities;
 
 namespace BooksWebAPI.Controllers
 {

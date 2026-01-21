@@ -7,7 +7,7 @@ namespace BooksWebAPI.Application.Interfaces
         Task<IEnumerable<ProductReadDTO>> GetallAsyn();
         Task<ProductReadDTO> GetByIdAsync(int id);
         Task<ProductReadDTO> CreateAsync(ProductCreateDTO productCreateDTO);
-        Task<bool> UpdateAsync(int id,ProductCreateDTO productCreateDTO);
+        Task<bool> UpdateAsync(int id, ProductUpdateDTO productCreateDTO);
         Task<bool> DeleteAsync(int id);
     }
 }

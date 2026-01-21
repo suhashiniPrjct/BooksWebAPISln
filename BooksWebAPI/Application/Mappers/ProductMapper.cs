@@ -5,8 +5,10 @@ namespace BooksWebAPI.Application.Mappers
 {
     public static class ProductMapper
     {
+        //read 
         public static ProductReadDTO ToDTO(Product product)
         {
+            //Entity from db -> DTO 
             return new ProductReadDTO
             {
                 Id= product.Id,
@@ -25,6 +27,7 @@ namespace BooksWebAPI.Application.Mappers
 
             };
         }
+        // Created DTO → Entity create
         public static Product ToPrdt(ProductCreateDTO DTO)
         {
             return new Product
@@ -43,5 +46,23 @@ namespace BooksWebAPI.Application.Mappers
 
             };
         }
+        //updated DTO ->entity- update
+        public static void MapUpdate(ProductUpdateDTO DTO, Product product)
+        {
+
+            DTO.Description = product.Description;
+            DTO.Title = product.Title;
+            DTO.Isbn = product.Isbn;
+            DTO.Author = product.Author;
+            DTO.ListPrice = product.ListPrice;
+            DTO.Price = product.Price;
+            DTO.Price50 = product.Price50;
+            DTO.Price100 = product.Price100;
+            DTO.CategoryId = product.CategoryId;
+            //DTO.Category = product.Category?.Name ?? " ",
+            DTO.ImageUrl = product.ImageUrl;
+
+        }
     }
+
 }

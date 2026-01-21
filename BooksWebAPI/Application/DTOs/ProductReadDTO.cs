@@ -1,4 +1,6 @@
-﻿namespace BooksWebAPI.Application.DTOs
+﻿using BooksWebAPI.Domain.Entities;
+
+namespace BooksWebAPI.Application.DTOs
 {
     public class ProductReadDTO
     {
@@ -18,6 +20,8 @@
         public double Price50 { get; set; }
 
         public double Price100 { get; set; }
+        public int CategoryId { get; set; }
         public string ImageUrl { get; set; } = null!;
+        public string Category { get; set; } = null!;
     }
 }

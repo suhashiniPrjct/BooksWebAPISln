@@ -34,14 +34,14 @@ namespace BooksWebAPI.Application.Services
 
             return product == null ? null : ProductMapper.ToDTO(product);
         }
-        public async Task<bool> UpdateAsync(int id,ProductCreateDTO productCreateDTO)
+        public async Task<bool> UpdateAsync(int id,ProductUpdateDTO updatedDTO)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
                 return false;
             
-            ProductMapper.ToPrdt(productCreateDTO);
+            ProductMapper.MapUpdate(updatedDTO,product);
             await _context.SaveChangesAsync();
             return true;
             

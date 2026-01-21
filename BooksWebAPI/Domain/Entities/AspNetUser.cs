@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BooksWebAPI.Models;
+namespace BooksWebAPI.Domain.Entities;
 
 public partial class AspNetUser
 {

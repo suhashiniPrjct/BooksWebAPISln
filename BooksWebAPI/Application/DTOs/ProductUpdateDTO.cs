@@ -2,7 +2,7 @@
 
 namespace BooksWebAPI.Application.DTOs
 {
-    public class ProductCreateDTO
+    public class ProductUpdateDTO
     {
         public string Title { get; set; } = null!;
 

@@ -18,6 +18,8 @@ namespace BooksWebAPI.Application.Mappers
                 Price = product.Price,
                 Price50 = product.Price50,
                 Price100 = product.Price100,
+                CategoryId = product.CategoryId,
+                Category = product.Category?.Name ?? " ",
                 ImageUrl = product.ImageUrl
                 //category collection do we need to add
 
@@ -35,6 +37,8 @@ namespace BooksWebAPI.Application.Mappers
                 Price = DTO.Price,
                 Price50 = DTO.Price50,
                 Price100 = DTO.Price100,
+                CategoryId=DTO.CategoryId,//this is value is assigned by selectlistitem 'value' whose value are dynamically assigned by getting category list in update/create operation
+                // no need of handling category navigation EF will handle it
                 ImageUrl = DTO.ImageUrl
 
             };

@@ -19,12 +19,18 @@ namespace BooksWebAPI.Application.Services
         }
         public async Task<IEnumerable<ProductReadDTO>> GetallAsyn()
         {
-            return await _context.Products.AsNoTracking().Select(p=>ProductMapper.ToDTO(p)).ToListAsync();
+           //
+           return await _context.Products
+                        .AsNoTracking()
+                        .Include(s=>s.Category)
+                        .Select(p=>ProductMapper.ToDTO(p)).ToListAsync();
                 
         }
         public async Task<ProductReadDTO> GetByIdAsync(int id)
         {
-            var product=await _context.Products.FirstOrDefaultAsync(p=>p.Id == id);
+            var product=await _context.Products
+                                       .Include(s=>s.Category)
+                                       .FirstOrDefaultAsync(p=>p.Id == id);
 
             return product == null ? null : ProductMapper.ToDTO(product);
         }

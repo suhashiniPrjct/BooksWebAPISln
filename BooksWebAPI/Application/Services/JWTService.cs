@@ -20,12 +20,12 @@ namespace BooksWebAPI.Application.Services
             _context = context;
         }
 
-        public string GenerateToken(string username, string password)
+        public async Task<string> GenerateToken(string username, string password)
         {
             // Find user by username
-            var user = _context.AspNetUsers
+            var user = await _context.AspNetUsers
                 .Include(u => u.Roles) // load roles
-                .FirstOrDefault(u => u.UserName == username);
+                .FirstOrDefaultAsync(u => u.UserName == username);
 
             if (user == null)
                 return null;
@@ -39,7 +39,7 @@ namespace BooksWebAPI.Application.Services
             //Create claims
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(ClaimTypes.Name, user.Name));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
 
             foreach (AspNetRole role in user.Roles)
             {

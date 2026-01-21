@@ -1,0 +1,11 @@
+﻿project related topics
+
+ProductApi
+│
+├── ProductApi.Api          → Controllers (Presentation)
+│
+├── ProductApi.Application  → DTOs, Services, Interfaces, Mapping
+│
+├── ProductApi.Domain       → Entities (Core business models)
+│
+├── ProductApi.Infrastructure → EF Core, DbContext

@@ -35,6 +35,7 @@ namespace BooksWebAPI.API.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -71,7 +72,7 @@ namespace BooksWebAPI.API.Controllers
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles ="Admin")]
+        
         public async Task<IActionResult> Delete(int id)
         {
             var deleted=await _pservice.DeleteAsync(id);

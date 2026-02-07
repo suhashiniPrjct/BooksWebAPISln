@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BooksWebAPI.Data;
 using BooksWebAPI.Domain.Entities;
 
-namespace BooksWebAPI.Controllers
+namespace BooksWebAPI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

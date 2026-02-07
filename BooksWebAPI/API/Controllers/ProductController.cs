@@ -1,33 +1,35 @@
 ﻿using BooksWebAPI.Application.DTOs;
 using BooksWebAPI.Application.Interfaces;
 using BooksWebAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BooksWebAPI.Controllers
+namespace BooksWebAPI.API.Controllers
 {
 
-
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class ProductController : ControllerBase
     {
 
         //private readonly AppDbContext _context;
         private readonly IProductService _pservice;
-
-        public ProductController(IProductService pservice)
+        private readonly ILogger<ProductController> _logger;
+        public ProductController(IProductService pservice, ILogger<ProductController> logger)
         {
             _pservice = pservice;
+            _logger = logger;
         }
 
         // GET: api/<ProductController>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-
+            _logger.LogInformation("Get all products");
             return Ok(await _pservice.GetallAsyn());
         }
 
@@ -35,10 +37,20 @@ namespace BooksWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var product=await _pservice.GetByIdAsync(id);
+            try
+            {
+                var product = await _pservice.GetByIdAsync(id);
 
-            return product==null ? NotFound() : Ok(product);
-            
+                return product == null ? NotFound() : Ok(product);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching portfolio for clientId {ClientId}", id);
+
+                return StatusCode(500,"An error occured");
+            }
+
         }
 
         // POST api/<ProductController>
@@ -51,7 +63,7 @@ namespace BooksWebAPI.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ProductCreateDTO Updatdto)
+        public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDTO Updatdto)
         {
             var Updatedprod=await _pservice.UpdateAsync(id,Updatdto);
             return Updatedprod ? NoContent() : NotFound();
@@ -59,6 +71,7 @@ namespace BooksWebAPI.Controllers
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleted=await _pservice.DeleteAsync(id);

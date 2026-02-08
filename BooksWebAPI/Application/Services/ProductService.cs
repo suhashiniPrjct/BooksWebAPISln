@@ -49,7 +49,7 @@ namespace BooksWebAPI.Application.Services
         public async Task<ProductReadDTO> CreateAsync(ProductCreateDTO productCreateDTO)
         {
             var product = ProductMapper.ToPrdt(productCreateDTO);
-            _context.Add(product);
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
             return ProductMapper.ToDTO(product);
             

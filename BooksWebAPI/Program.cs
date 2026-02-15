@@ -18,16 +18,17 @@ builder.Services.AddControllers();
 //when both frontend backend api are in same domain
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 //                                   .AddCookie(options => { options.LoginPath = "/account/login"; });// redirect unauthenticated users here
-//JWTSettings                                                                                                  //when its a multi domain ,SPA and mobile 
-var jwtsettings = builder.Configuration.GetSection("JwtSettings");
 
+//DataBase Registration
 builder.Services.AddDbContext<AppDbContext>(options =>
                                             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
                                             .LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging());
 
-builder.Services.AddScoped<JWTService, JWTService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<JWTService, JWTService>();
 
+//JWTSettings when its a multi domain ,SPA and mobile                                                                                              
+var jwtsettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,13 +54,13 @@ builder.Services.AddAuthorization();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//to enable aws cloudwatch logging
+//To enable AWS CloudWatch logging
 //builder.Logging.ClearProviders();//remove inbuild ilogger 
 //builder.Logging.AddConsole(); //add console logger
 //builder.Logging.AddDebug();//added debugger
 
 var app = builder.Build();
-app.UseMiddleware<ExceptionMiddleware>();//custom middleware
+app.UseMiddleware<ExceptionMiddleware>();//Custom Exception Middleware
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

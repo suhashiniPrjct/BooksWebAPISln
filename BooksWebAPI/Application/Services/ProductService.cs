@@ -2,6 +2,8 @@
 using BooksWebAPI.Application.Interfaces;
 using BooksWebAPI.Application.Mappers;
 using BooksWebAPI.Data;
+using BooksWebAPI.Domain.Entities;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 //using AutoMapper;
 
@@ -10,6 +12,7 @@ namespace BooksWebAPI.Application.Services
     public class ProductService : IProductService
     {
         private readonly AppDbContext _context;
+        string defaultImageUrl = "/images/default.png";
         
         public ProductService(AppDbContext context)//, IMapper mapper)
         {
@@ -17,7 +20,7 @@ namespace BooksWebAPI.Application.Services
             
 
         }
-        public async Task<IEnumerable<ProductReadDTO>> GetallAsyn()
+        public async Task<IEnumerable<ProductReadDTO>> GetallAsync()
         {
            //
            return await _context.Products
@@ -26,7 +29,7 @@ namespace BooksWebAPI.Application.Services
                         .Select(p=>ProductMapper.ToDTO(p)).ToListAsync();
                 
         }
-        public async Task<ProductReadDTO> GetByIdAsync(int id)
+        public async Task<ProductReadDTO?> GetByIdAsync(int id)
         {
             var product=await _context.Products
                                        .Include(s=>s.Category)
@@ -37,36 +40,53 @@ namespace BooksWebAPI.Application.Services
         public async Task<bool> UpdateAsync(int id,ProductUpdateDTO updatedDTO)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
             if (product == null)
-                return false;
+            return false;
+            if (updatedDTO.Price50 > updatedDTO.Price50) {
+                throw new ArgumentException("Price50 cannot be greater than Price100");
+            }
+            var CategoryExists=await _context.Categories.AnyAsync(c=>c.Id == updatedDTO.CategoryId);
+            if (!CategoryExists)
+            {
+                throw new ArgumentException("Category does not exist");
+            }
             
             ProductMapper.MapUpdate(updatedDTO,product);
             await _context.SaveChangesAsync();
             return true;
             
         }
-        public async Task<ProductReadDTO> CreateAsync(ProductCreateDTO productCreateDTO)
+        public async Task<ProductReadDTO> CreateAsync(ProductCreateDTO CDTO)
         {
-            var product = ProductMapper.ToPrdt(productCreateDTO);
+            // Business validations (multi-field / DB dependent)
+            if (CDTO.Price50 > CDTO.Price100)
+                throw new ArgumentException("Price50 cannot be greater than Price100");
+
+            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == CDTO.CategoryId);
+            if (!categoryExists)
+                throw new ArgumentException("Category does not exist");
+           
+
+            var product = ProductMapper.ToPrdt(CDTO);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
             return ProductMapper.ToDTO(product);
-            
+
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id==id);
+             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-            if(product == null)
+            if (product == null)
+                return false; // Controller handles 404
 
-                    return false;
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
             return true;
-            
+
         }
 
 

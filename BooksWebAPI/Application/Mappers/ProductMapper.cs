@@ -1,5 +1,6 @@
-﻿using BooksWebAPI.Domain.Entities;
-using BooksWebAPI.Application.DTOs;
+﻿using BooksWebAPI.Application.DTOs;
+using BooksWebAPI.Domain.Entities;
+using Humanizer;
 
 namespace BooksWebAPI.Application.Mappers
 {
@@ -22,7 +23,7 @@ namespace BooksWebAPI.Application.Mappers
                 Price100 = product.Price100,
                 CategoryId = product.CategoryId,
                 Category = product.Category?.Name ?? " ",
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl ?? "/images/default.png"
                 //category collection do we need to add
 
             };
@@ -42,7 +43,7 @@ namespace BooksWebAPI.Application.Mappers
                 Price100 = DTO.Price100,
                 CategoryId=DTO.CategoryId,//this is value is assigned by selectlistitem 'value' whose value are dynamically assigned by getting category list in update/create operation
                 // no need of handling category navigation EF will handle it
-                ImageUrl = DTO.ImageUrl
+                ImageUrl = DTO.ImageUrl ?? "/images/default.png"
 
             };
         }
@@ -60,7 +61,7 @@ namespace BooksWebAPI.Application.Mappers
             DTO.Price100 = product.Price100;
             DTO.CategoryId = product.CategoryId;
             //DTO.Category = product.Category?.Name ?? " ",
-            DTO.ImageUrl = product.ImageUrl;
+            DTO.ImageUrl = product.ImageUrl ?? product.ImageUrl ?? "/images/default.png";
 
         }
     }
